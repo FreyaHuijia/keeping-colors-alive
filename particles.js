@@ -1,6 +1,8 @@
 const c = document.querySelector("#art"), ctx = c.getContext("2d");
 const W = 1200, H = 1040, X = 60, Y = 16, AW = 1080, AH = 810, S = 5, C = 12, R = 9, CW = 90, CH = 90;
-let particles = [], active = [], patches = [], dust = [], paused = false, speed = 0.03, last = 0, clock = 0;
+let particles = [], active = [], patches = [], dust = [], paused = false, speed = 0.1, last = 0, clock = 0;
+const releaseInterval = 0.03;
+let releaseCooldown = 0;
 let src = document.createElement("canvas");
 src.width = AW;
 src.height = AH;
@@ -20,6 +22,7 @@ function init() {
     patches = [];
     dust = [];
     clock = 0;
+    releaseCooldown = 0;
     cells = Array.from({ length: C * R }, () => []);
     l.clearRect(0, 0, W, H);
     const d = g.getImageData(0, 0, AW, AH).data;
@@ -59,6 +62,7 @@ function frame(t) {
     last = t;
     if (!paused) {
         clock += dt * speed;
+        releaseCooldown = Math.max(0, releaseCooldown - dt * speed);
         if (clock > 1.5) {
             if (particles.filter(p => p.state === 0).length > particles.length * 0.15)
                 patch();
@@ -73,11 +77,13 @@ function frame(t) {
             for (let r = r0; r <= r1; r++)
                 for (let q = c0; q <= c1; q++)
                     for (let p of cells[r * C + q]) {
-                        if (p.state !== 0 || p.protect > 0)
+                        if (releaseCooldown > 0 || p.state !== 0 || p.protect > 0)
                             continue;
                         let dx = p.x - a.x, dy = (p.y - a.y) / a.stretch, ang = Math.atan2(dy, dx), edge = a.r * (1 + 0.22 * Math.sin(ang * 5 + a.phase) + 0.14 * Math.cos(ang * 9 - a.phase));
-                        if (dx * dx + dy * dy < edge * edge && Math.random() < dt * speed * 3)
+                        if (dx * dx + dy * dy < edge * edge && Math.random() < dt * speed * 3) {
                             release(p);
+                            releaseCooldown = releaseInterval;
+                        }
                     }
         }
         patches = patches.filter(a => a.r < a.target);

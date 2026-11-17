@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Keeping Colors Alive — Particle Erosion</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="particles.js" defer></script>
+  <script src="interaction.js" defer></script>
+</head>
+<body>
+<main>
+<header>
+<h1>KEEPING COLORS ALIVE</h1>
+<small>PARTICLE EROSION / INTERACTIVE STUDY</small>
+</header>
+<canvas id="art" width="1200" height="1040" aria-label="Interactive artwork; select a weathered grid to restore it">
+</canvas>
+<div id="panel" hidden>
+<canvas id="sample" width="78" height="78">
+</canvas>
+<div>
+<strong>Restore selected section</strong>
+<p class="restore-hint">Hold the button or paint across the preview to return its original colors.</p>
+<button class="primary" id="restore">Hold to restore</button> <button id="cancel">Cancel</button>
+</div>
+</div>
+<footer>
+<span id="status">Select a weathered area to restore its colors.</span>
+<div class="controls">
+<label>Weathering <input id="speed" type="range" min="0.2" max="4" step="0.2" value="1">
+</label>
+<label>
+<input id="grid" type="checkbox">Grid</label>
+<button id="weather">Weather now</button>
+<button id="pause">Pause</button>
+<button id="reset">Reset</button>
+<button id="gallery">Gallery view</button>
+</div>
+</footer>
+</main>
+</body>
+</html>

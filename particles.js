@@ -1,6 +1,6 @@
 const c = document.querySelector("#art"), ctx = c.getContext("2d");
 const W = 1200, H = 1040, X = 60, Y = 16, AW = 1080, AH = 810, S = 5, C = 12, R = 9, CW = 90, CH = 90;
-let particles = [], active = [], patches = [], dust = [], paused = false, speed = 1, last = 0, clock = 0;
+let particles = [], active = [], patches = [], dust = [], paused = false, speed = 0.05, last = 0, clock = 0;
 let src = document.createElement("canvas");
 src.width = AW;
 src.height = AH;
